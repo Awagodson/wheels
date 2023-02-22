@@ -1,0 +1,291 @@
+{% load static %}
+{% load shop_filters %}
+<!-- header-start -->
+<header class="header">
+    <div class="header-top">
+        <div class="container custom-conatiner">
+            <div class="header-inner">
+                <div class="row align-items-center" style="padding: 4px 0">
+                    <div class="col-xl-6 col-lg-7">
+                        <div class="header-inner-start">
+                            <div class="support d-none d-sm-block">
+                                <p>Need Help? <a href="tel:+16468209781">+1 646-820-9781</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-5 d-none d-lg-block">
+                        <div class="header-inner-end text-md-end">
+                            <div class="ovic-menu-wrapper ovic-menu-wrapper-2">
+                                <ul>
+                                    <li><a href="{% url 'about' %}">About Us</a></li>
+                                    <li><a href="{% url 'orders' %}">Order Tracking</a></li>
+                                    <!-- <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="faq.html">FAQs</a></li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header-mid">
+        <div class="container custom-conatiner">
+            <div class="heade-mid-inner">
+                <div class="row align-items-center">
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-4">
+                        <div class="header__info">
+                            <div class="logo">
+                                <a href="{% url 'home' %}" class="logo-image"><img
+                                        src="{% static 'ClivertWheels.png' %}" alt="logo"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-4 d-none d-lg-block">
+                        <div class="header__search">
+                            <form action="#">
+                                <div class="header__search-box">
+                                    <input class="search-input search-input-2" type="text"
+                                        placeholder="I'm loking for...">
+                                    <button class="button button-2" type="submit"><i
+                                            class="far fa-search"></i></button>
+                                </div>
+                                <div class="header__search-cat">
+                                    <select>
+                                        <option value="all" selected>All Categories</option>
+                                        {% if categories %}
+                                            {% for item in categories %}
+                                            <option value="{{ item.name }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-5 col-md-8 col-sm-8 ml-auto">
+                        <div class="header-action">
+                            <div class="block-userlink">
+                                <a class="icon-link icon-link-2" href="{% if user.is_authenticated %}{% url 'profile' %}{% else %}{% url 'signin' %}{% endif %}">
+                                    <i class="flaticon-user"></i>
+                                    <span class="text">
+                                        <span class="sub">{% if user.is_authenticated %}{{ user.username }}{% else %}Login{% endif %} </span>
+                                        My Account </span>
+                                </a>
+                            </div>
+                            <div class="block-wishlist action">
+                                <a class="icon-link icon-link-2" href="{% url 'orders' %}">
+                                    <img src="/static/delivery.png" height="35" alt="">
+                                    <!-- <span class="count count-2">{{ in_whitelist }}</span> -->
+                                    <span class="text">
+                                        <span class="sub">Orders</span>
+                                        My Orders </span>
+                                </a>
+                            </div>
+                            <div class="block-cart action">
+                                <a class="icon-link icon-link-2" href="{% url 'cart' %}">
+                                    <i class="flaticon-shopping-bag"></i>
+                                    <span class="count count-2">{{ in_cart_count }}</span>
+                                    <span class="text">
+                                        <span class="sub">Your Cart:</span>
+                                        ${{ cart_price }} </span>
+                                </a>
+                                <div class="cart">
+                                    <div class="cart__mini">
+                                        <ul>
+                                            <li>
+                                                <div class="cart__title">
+                                                    <h4>Your Cart</h4>
+                                                    <span>({{ in_cart_count }} Item in Cart)</span>
+                                                </div>
+                                            </li>
+                                            {% if in_cart %}
+                                                {% for item in in_cart %}
+                                                <li>
+                                                    <div
+                                                        class="cart__item d-flex justify-content-between align-items-center">
+                                                        <div class="cart__inner d-flex">
+                                                            <div class="cart__thumb">
+                                                                <a href="/p/{{ item.product.slug }}/">
+                                                                    <img src="{{ item.product.image1_85.url }}">
+                                                                </a>
+                                                            </div>
+                                                            <div class="cart__details">
+                                                                <h6><a href="/p/{{ item.product.slug }}/">{{ item.product.name }}</a></h6>
+                                                                <div class="cart__price">
+                                                                    <span>${{ item.product.price }}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="cart__del">
+                                                            <a href="#"><i class="fal fa-times"></i></a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            {% else %}
+                                                No items in cart
+                                            {% endif %}
+                                            <li>
+                                                <div
+                                                    class="cart__sub d-flex justify-content-between align-items-center">
+                                                    <h6>Subtotal</h6>
+                                                    <span class="cart__sub-total">${{ cart_price }}</span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'cart' %}" class="wc-cart mb-10">View cart</a>
+                                                <a href="{% url 'checkout' %}" class="wc-checkout">Checkout</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="header__bottom">
+        <div class="container custom-conatiner">
+            <div class="row g-0 align-items-center">
+                <div class="col-lg-3">
+                    <div class="cat__menu-wrapper side-border d-none d-lg-block">
+                        <div class="cat-toggle">
+                            <button type="button" class="cat-toggle-btn cat-toggle-btn-1"><i
+                                    class="fal fa-bars"></i>Shop by Category</button>
+                            <div class="cat__menu-2 cat__menu">
+                                <nav id="mobile-menu" style="display: block;">
+                                    {% if categories %}
+                                    <ul>
+                                        {% for category in categories %}
+                                        <li>
+                                            <a href="/c/{{ category.slug }}/">{{ category.name }}
+                                                {% if category.tag %}
+                                                <span class="cat-label green">{{category.tag}}!</span>
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                    {% else %}
+                                        No categories
+                                    {% endif %}
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-3">
+                    <div class="header__bottom-left d-flex d-xl-block align-items-center">
+                        <div class="side-menu d-lg-none mr-20">
+                            <button type="button" class="side-menu-btn offcanvas-toggle-btn"><i
+                                    class="fas fa-bars"></i></button>
+                        </div>
+                        <div class="main-menu d-none d-lg-block">
+                            <nav>
+                                
+                                <ul>
+                                    {% for category in categories|highlighted_category %}
+                                        <li><a href="/c/{{ category.slug }}/">{{ category.name }}</a></li>
+                                    {% endfor %}
+                                    <!-- <li class="has-mega"><a href="shop.html">Hot Deals <i
+                                                class="far fa-angle-down"></i></a>
+                                        <div class="mega-menu">
+                                            <div class="container container-mega">
+                                                <ul>
+                                                    <li>
+                                                        <ul>
+                                                            <li class="title"><a href="shop.html">SHOP LAYOUT</a>
+                                                            </li>
+                                                            <li><a href="shop.html">Pagination</a></li>
+                                                            <li><a href="shop.html">Ajax Load More</a></li>
+                                                            <li><a href="shop.html">Infinite Scroll</a></li>
+                                                            <li><a href="shop.html">Sidebar Right</a></li>
+                                                            <li><a href="shop.html">Sidebar Left</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <ul>
+                                                            <li class="title"><a href="shop.html">SHOP PAGES</a>
+                                                            </li>
+                                                            <li><a href="shop.html">List View</a></li>
+                                                            <li><a href="shop.html">Small Products</a></li>
+                                                            <li><a href="shop.html">Large Products</a></li>
+                                                            <li><a href="shop.html">Shop — 3 Items</a></li>
+                                                            <li><a href="shop.html">Shop — 4 Items</a></li>
+                                                            <li><a href="shop.html">Shop — 5 Items</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <ul>
+                                                            <li class="title"><a href="shop.html">PRODUCT LAYOUT</a>
+                                                            </li>
+                                                            <li><a href="shop.html">Description Sticky</a></li>
+                                                            <li><a href="shop.html">Product Carousel</a></li>
+                                                            <li><a href="shop.html">Gallery Modern</a></li>
+                                                            <li><a href="shop.html">Thumbnail Left</a></li>
+                                                            <li><a href="shop.html">Thumbnail Right</a></li>
+                                                            <li><a href="shop.html">Thumbnail Botttom</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <ul>
+                                                            <li class="title"><a href="shop.html">Basketball</a>
+                                                            </li>
+                                                            <li><a href="shop.html">East Hampton Fleece</a></li>
+                                                            <li><a href="shop.html">Faxon Canvas Low</a></li>
+                                                            <li><a href="shop.html">Habitasse Dictumst</a></li>
+                                                            <li><a href="shop.html">Kaoreet Lobortis</a></li>
+                                                            <li><a href="shop.html">NikeCourt Zoom</a></li>
+                                                            <li><a href="shop.html">NikeCourts Air Zoom</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <ul>
+                                                            <li class="title"><a href="shop.html">Basketball</a>
+                                                            </li>
+                                                            <li><a href="shop.html">East Hampton Fleece</a></li>
+                                                            <li><a href="shop.html">Faxon Canvas Low</a></li>
+                                                            <li><a href="shop.html">Habitasse Dictumst</a></li>
+                                                            <li><a href="shop.html">Kaoreet Lobortis</a></li>
+                                                            <li><a href="shop.html">NikeCourt Zoom</a></li>
+                                                            <li><a href="shop.html">NikeCourts Air Zoom</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li class="mega-image hover-effect"
+                                                        style="background-image: url({% static 'shop/img/bg/menu-item.jpg' %});">
+                                                        <ul>
+                                                            <li><a href="shop.html">
+                                                                    <h4>Top Cameras <br> Bestseller Products</h4>
+                                                                    <h5>4K</h5>
+                                                                    <h6>Sale Up To <span>60% Off</span></h6>
+                                                                </a></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="offer mt-40">
+                                                <p><b>30% OFF</b> the shipping of your first order with the code:
+                                                    <b>DUKA-SALE30</b></p>
+                                            </div>
+                                        </div>
+                                    </li> -->
+                                    
+                                    <!-- <li><a href="about.html">Blog</a></li> -->
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-lg-3 col-md-6 col-9">
+                    <div class="shopeing-text text-sm-end">
+                        <p>Spend $120 more and get free shipping!</p>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</header>
+<!-- header-end -->
